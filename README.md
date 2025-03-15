@@ -1,70 +1,129 @@
-# Getting Started with Create React App
+# Department Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
+The **Department Management System** is a web-based application designed to manage internal assessments, attendance tracking, and timetable scheduling for an educational institution. It provides a user-friendly interface for teachers and students to interact with assessment records and schedules efficiently. The goal is to enhance transparency, improve record-keeping, and reduce the administrative burden on faculty by digitizing these processes.
 
-## Available Scripts
+## Features
+### 1. Admin Panel
+- Add and manage faculty and students.
+- Add subjects and assign faculty to subjects.
+- Manage student attendance.
+- Add and update student marks.
 
-In the project directory, you can run:
+### 2. Faculty Panel
+- View student details.
+- Manage and update student attendance.
+- Update student marks.
 
-### `npm start`
+### 3. Student Panel
+- View attendance records.
+- View marks for internal assessments.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Tech Stack
+### Frontend
+- React.js
+- React-DOM
+- React-Scripts
+- Axios (for API communication)
+- React Context API / Redux (for state management)
+- CSS (for UI styling)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Backend
+- Node.js
+- Express.js
+- Mongoose (MongoDB ORM)
+- MongoDB (Database)
+- dotenv (for environment variables)
+- CORS (for cross-origin requests)
+- bcrypt.js (for password hashing)
+- JSON Web Token (JWT) for authentication
 
-### `npm test`
+## Installation & Setup
+### Prerequisites
+Ensure you have the following installed:
+- **Node.js** (latest LTS version recommended)
+- **MongoDB Community Server** (local or cloud-based)
+- **Modern Web Browser** (Chrome, Firefox, Edge)
+- **Postman** (for API testing)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Steps to Run the Project
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/CAYSUS-DILAN/department-management-system.git
+   cd department-management-system
+   ```
 
-### `npm run build`
+2. **Backend Setup:**
+   ```sh
+   cd backend
+   npm install
+   npm start
+   ```
+   - The backend will run on `http://localhost:5000`
+   - Ensure MongoDB is running before starting the backend.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. **Frontend Setup:**
+   ```sh
+   cd frontend
+   npm install
+   npm start
+   ```
+   - The frontend will run on `http://localhost:3000`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Project Structure
+```
+/department-management-system
+ ├── /frontend  # React-based UI
+ ├── /backend   # Node.js, Express, and Mongoose setup
+ ├── /models    # MongoDB models
+ ├── /routes    # API routes
+ ├── /controllers # Business logic
+ ├── README.md  # Project documentation
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## API Endpoints
+### Authentication
+- `POST /api/auth/signup` - Register new users
+- `POST /api/auth/login` - User login
 
-### `npm run eject`
+### Admin Routes
+- `POST /api/admin/addFaculty` - Add faculty
+- `POST /api/admin/addStudent` - Add students
+- `POST /api/admin/addSubject` - Add subjects
+- `PUT /api/admin/assignFaculty/:subjectId` - Assign faculty to subjects
+- `PUT /api/admin/updateMarks/:studentId` - Update student marks
+- `PUT /api/admin/updateAttendance/:studentId` - Update attendance
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Faculty Routes
+- `GET /api/faculty/students` - View student details
+- `PUT /api/faculty/updateMarks/:studentId` - Update marks
+- `PUT /api/faculty/updateAttendance/:studentId` - Update attendance
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Student Routes
+- `GET /api/student/attendance` - View attendance
+- `GET /api/student/marks` - View marks
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Testing
+- **Unit Testing:** Jest, React Testing Library
+- **Integration Testing:** API endpoint testing with Postman
+- **User Acceptance Testing:** End-user testing and feedback
+- **Error Handling Tests:** Ensures system stability
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Deployment
+- **Frontend:** Vercel/Netlify
+- **Backend:** Heroku/AWS
+- **Optional:** Docker for containerized deployment
 
-## Learn More
+## Future Enhancements
+- Implement AI-based student performance analysis to provide insights.
+- Add push notifications for schedule changes.
+- Introduce an admin panel with more advanced control options.
+- Improve UX with drag-and-drop scheduling for timetables.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+---
+**Author:** Caysus Dilan Rodrigues  
+**GitHub:**  CAYSUS-DILAN(https://github.com/CAYSUS-DILAN)  
+**Email:** caysusdilanrodrigues@gmail.com
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
