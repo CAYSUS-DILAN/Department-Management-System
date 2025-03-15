@@ -1,75 +1,44 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
-import { getAllStudents } from '../../../redux/studentRelated/studentHandle';
-import { deleteUser } from '../../../redux/userRelated/userHandle';
-import {
-    Paper, Box, IconButton
-} from '@mui/material';
-import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
-import { BlackButton, BlueButton, GreenButton } from '../../../components/buttonStyles';
-import TableTemplate from '../../../components/TableTemplate';
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
-import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
-
+import { useEffect } from "react";
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-// import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { KeyboardArrowUp, KeyboardArrowDown } from '@mui/icons-material';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
-import Popper from '@mui/material/Popper';
-import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
-import Popup from '../../../components/Popup';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom'
+import { getClassStudents } from "../../redux/sclassRelated/sclassHandle";
+import { Paper, Box, Typography, ButtonGroup, Button, Popper, Grow, ClickAwayListener, MenuList, MenuItem } from '@mui/material';
+import { BlackButton, BlueButton} from "../../components/buttonStyles";
+import TableTemplate from "../../components/TableTemplate";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 
-const ShowStudents = () => {
-
+const TeacherClassDetails = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
-    const { studentsList, loading, error, response } = useSelector((state) => state.student);
-    const { currentUser } = useSelector(state => state.user)
+    const { sclassStudents, loading, error, getresponse } = useSelector((state) => state.sclass);
+
+    const { currentUser } = useSelector((state) => state.user);
+    const classID = currentUser.teachSclass?._id
+    const subjectID = currentUser.teachSubject?._id
 
     useEffect(() => {
-        dispatch(getAllStudents(currentUser._id));
-    }, [currentUser._id, dispatch]);
+        dispatch(getClassStudents(classID));
+    }, [dispatch, classID])
 
     if (error) {
-        console.log(error);
-    }
-
-    const [showPopup, setShowPopup] = React.useState(false);
-    const [message, setMessage] = React.useState("");
-
-    const deleteHandler = (deleteID, address) => {
-       // console.log(deleteID);
-        //console.log(address);
-        //setMessage("Sorry the delete function has been disabled for now.")
-        //setShowPopup(true)
-
-         dispatch(deleteUser(deleteID, address))
-             .then(() => {
-                 dispatch(getAllStudents(currentUser._id));
-             })
+        console.log(error)
     }
 
     const studentColumns = [
         { id: 'name', label: 'Name', minWidth: 170 },
         { id: 'rollNum', label: 'Roll Number', minWidth: 100 },
-        { id: 'sclassName', label: 'Class', minWidth: 170 },
     ]
 
-    const studentRows = studentsList && studentsList.length > 0 && studentsList.map((student) => {
+    const studentRows = sclassStudents.map((student) => {
         return {
             name: student.name,
             rollNum: student.rollNum,
-            sclassName: student.sclassName.sclassName,
             id: student._id,
         };
     })
 
-    const StudentButtonHaver = ({ row }) => {
+    const StudentsButtonHaver = ({ row }) => {
         const options = ['Take Attendance', 'Provide Marks'];
 
         const [open, setOpen] = React.useState(false);
@@ -86,10 +55,10 @@ const ShowStudents = () => {
         };
 
         const handleAttendance = () => {
-            navigate("/Admin/students/student/attendance/" + row.id)
+            navigate(`/Teacher/class/student/attendance/${row.id}/${subjectID}`)
         }
         const handleMarks = () => {
-            navigate("/Admin/students/student/marks/" + row.id)
+            navigate(`/Teacher/class/student/marks/${row.id}/${subjectID}`)
         };
 
         const handleMenuItemClick = (event, index) => {
@@ -110,11 +79,12 @@ const ShowStudents = () => {
         };
         return (
             <>
-                <IconButton onClick={() => deleteHandler(row.id, "Student")}>
-                    <PersonRemoveIcon color="error" />
-                </IconButton>
-                <BlueButton variant="contained"
-                    onClick={() => navigate("/Admin/students/student/" + row.id)}>
+                <BlueButton
+                    variant="contained"
+                    onClick={() =>
+                        navigate("/Teacher/class/student/" + row.id)
+                    }
+                >
                     View
                 </BlueButton>
                 <React.Fragment>
@@ -173,42 +143,36 @@ const ShowStudents = () => {
         );
     };
 
-    const actions = [
-        {
-            icon: <PersonAddAlt1Icon color="primary" />, name: 'Add New Student',
-            action: () => navigate("/Admin/addstudents")
-        },
-        {
-            icon: <PersonRemoveIcon color="error" />, name: 'Delete All Students',
-            action: () => deleteHandler(currentUser._id, "Students")
-        },
-    ];
-
     return (
         <>
-            {loading ?
+            {loading ? (
                 <div>Loading...</div>
-                :
+            ) : (
                 <>
-                    {response ?
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-                            <GreenButton variant="contained" onClick={() => navigate("/Admin/addstudents")}>
-                                Add Students
-                            </GreenButton>
-                        </Box>
-                        :
+                    <Typography variant="h4" align="center" gutterBottom>
+                        Class Details
+                    </Typography>
+                    {getresponse ? (
+                        <>
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+                                No Students Found
+                            </Box>
+                        </>
+                    ) : (
                         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                            {Array.isArray(studentsList) && studentsList.length > 0 &&
-                                <TableTemplate buttonHaver={StudentButtonHaver} columns={studentColumns} rows={studentRows} />
+                            <Typography variant="h5" gutterBottom>
+                                Students List:
+                            </Typography>
+
+                            {Array.isArray(sclassStudents) && sclassStudents.length > 0 &&
+                                <TableTemplate buttonHaver={StudentsButtonHaver} columns={studentColumns} rows={studentRows} />
                             }
-                            <SpeedDialTemplate actions={actions} />
                         </Paper>
-                    }
+                    )}
                 </>
-            }
-            <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
+            )}
         </>
     );
 };
 
-export default ShowStudents;
+export default TeacherClassDetails;

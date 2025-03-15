@@ -17,12 +17,12 @@ const Homepage = () => {
                         <StyledTitle>
                             Welcome to
                             <br />
-                            RGIPT Campus Management
+                           Department Management
                             <br />
                             System
                         </StyledTitle>
                         <StyledText>
-                            Streamline Intitute management, class organization, and add students and faculty.
+                            Streamline Department management, class organization, and add students and faculty.
                             Seamlessly track attendance, assess performance, and provide feedback.
                             Access records, view marks, and communicate effortlessly.
                         </StyledText>
